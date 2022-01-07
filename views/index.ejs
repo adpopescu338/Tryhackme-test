@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="/stylesheets/style.css" />
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" />
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+		<title><%= title %></title>
+	</head>
+	<body onload="loadData()">
+		<h1><%= title %></h1>
+		<div id="filter-panel">
+			<span>Group by</span>
+
+			<div class="input-field col s12">
+				<select multiple id="language-filter">
+					<option value="" disabled selected>Language</option>
+				</select>
+			</div>
+
+			<div class="input-field col s12">
+				<select multiple id="location-filter">
+					<option value="" disabled selected>Location</option>
+				</select>
+			</div>
+			<a class="waves-effect waves-light btn" onclick="loadData()">Apply</a>
+		</div>
+
+		<div id="data">
+			<div id="spinner">
+				<div class="preloader-wrapper big active">
+					<div class="spinner-layer spinner-blue-only">
+						<div class="circle-clipper left">
+							<div class="circle"></div>
+						</div>
+						<div class="gap-patch">
+							<div class="circle"></div>
+						</div>
+						<div class="circle-clipper right">
+							<div class="circle"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script>
+		const animateContactButtonOn = event => {
+			const wrapper = event.currentTarget;
+			const button = wrapper.querySelector('.button-wrapper');
+
+			button.style.display = 'inline';
+			button.style.marginTop = wrapper.offsetHeight / 2 - button.offsetHeight / 2 + 'px';
+			button.style.opacity = 1;
+		};
+
+		const animateContactButtonOut = event => {
+			const wrapper = event.currentTarget;
+			const button = wrapper.querySelector('.button-wrapper');
+			button.style.opacity = 0;
+			button.style.marginTop = '-40px';
+			setTimeout(() => (button.style.display = 'none'), 500);
+		};
+
+		const formatData = user => `
+      <div class='user-card'>
+          <div class='button-wrapper'><a href='mailto:${
+											user.email
+										}' class="waves-effect waves-light btn"><i class="material-icons right">email</i>button</a></div>
+         <img src='https://i.pravatar.cc/200?${Math.random()}' width=282 height=282 alt='profile image' lazy/>
+         <div><b>${user.firstName} ${user.lastName}, ${user.location}</b></div>
+         <div class='languages'>${user.spokenLanguages
+										.map(lang => `<div class="tag">${lang}</div>`)
+										.reduce((current, next) => current + next)}</div>
+         </div>
+      `;
+
+		function appendData(data) {
+			//it's necessary to reduce it to a single string otherwise because of the js automate array to string conversion, each item will be followed by a comma
+			document.querySelector('#data').innerHTML = data.map(formatData).reduce((current, next) => current + next);
+			Array.from(document.querySelectorAll('.user-card')).forEach(userCard => {
+				userCard.onmouseover = animateContactButtonOn;
+				userCard.onmouseleave = animateContactButtonOut;
+			});
+
+			initializeFilters(data);
+		}
+
+		function initializeFilters(users) {
+			if (document.querySelectorAll('#language-filter option').length > 1) return;
+			const languages = Array.from(new Set(users.map(({ spokenLanguages }) => spokenLanguages).flat()));
+			const locations = Array.from(new Set(users.map(({ location }) => location).flat()));
+			//using a set is necessary to eliminate duplicate values, while Array.from is necessary because we cannot use array methods on Set
+
+			const languageFilter = document.querySelector('#language-filter');
+			languageFilter.innerHTML += languages
+				.map(lang => `<option value=${lang}>${lang}</option>`)
+				.reduce((current, next) => current + next);
+			const langinstances = M.FormSelect.init(languageFilter, languages);
+			//I hope you don't mind that I used this library, I just didn't have time to make a nice UI from scratch
+
+			const locationFilter = document.querySelector('#location-filter');
+			locationFilter.innerHTML += locations
+				.map(loc => `<option value=${loc}>${loc}</option>`)
+				.reduce((current, next) => current + next);
+			const locinstances = M.FormSelect.init(locationFilter, locations);
+		}
+
+		function loadData() {
+			const spokenLanguages = M.FormSelect.getInstance(document.querySelector('#language-filter'))
+				?.getSelectedValues()
+				.filter(Boolean);
+			const location = M.FormSelect.getInstance(document.querySelector('#location-filter'))
+				?.getSelectedValues()
+				.filter(Boolean);
+			//The filter here is only necessary because the input sometimes passes an empty string
+
+			axios
+				.get('/users', { params: { spokenLanguages, location } })
+				.then(({ data }) => appendData(data))
+				.catch(console.log);
+		}
+	</script>
+</html>

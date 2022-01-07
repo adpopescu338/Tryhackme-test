@@ -1,0 +1,78 @@
+body {
+	font: 14px 'Lucida Grande', Helvetica, Arial, sans-serif;
+   padding-bottom: 50px;
+}
+
+a {
+	color: #00b7ff;
+}
+h1:first-of-type {
+	text-align: center;
+}
+
+#spinner {
+	text-align: center;
+}
+
+#data {
+	margin-top: 50px;
+	padding-left: 3%;
+	padding-right: 3%;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: center;
+}
+#data img {
+	border-radius: 7px;
+	box-shadow: 0 0 2px black;
+	width: 100%;
+}
+.user-card {
+	margin: 5px 18px 15px 18px;
+	font-size: large;
+	padding: 8px;
+	border: 1px solid grey;
+	border-radius: 8px;
+	box-shadow: 0 0 5px black;
+	width: 300px;
+	transition: background-color 0.5s, box-shadow.5s;
+	background-color: white;
+}
+
+.user-card:hover {
+	box-shadow: 0 0 20px black;
+	background-color: rgb(236, 236, 236);
+}
+
+.languages {
+	word-wrap: break-word;
+}
+
+.tag {
+	background-color: rgba(128, 128, 128, 0.4);
+	margin: 4px 4px 3px 4px;
+	border-radius: 8px;
+	padding: 3px 6px 3px 6px;
+	white-space: nowrap;
+	display: inline-block;
+}
+
+.button-wrapper {
+	transition: opacity 0.5s, margin-top 0.5s, display 0.5s;
+	margin-left: 82px;
+	margin-top: -40px;
+	position: absolute;
+	opacity: 0;
+	display: none;
+}
+
+
+#filter-panel{
+   border-radius: 25px;
+   border: 1px solid rgb(129, 129, 236);
+   padding: 15px;
+   font-size: larger;
+   width: 96%;
+   margin: 0 auto;
+}
