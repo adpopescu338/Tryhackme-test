@@ -6,38 +6,6 @@ I appreciated the opportunity to learn about EJS, but I really hope it woudn't b
 As for the UI, basic implementation with a little help from https://materializecss.com/
 
 
-
-### Installation Instructions
-Please ensure that you have NPM and NodeJS installed. If you do not, please download the latest version here: https://docs.npmjs.com/downloading-and-installing-node-js-and-npm
-
-After installing npm, please ensure you install the dependencies using the `npm install` command in the root of this folder.
-
-Please ensure that you have mongodb installed. If you do not, please download the latest version here: https://docs.mongodb.com/manual/installation/
-
-Once mongodb is installed, you need to restore the database dump (which is in the ./mongo-database-dump/ folder).This is done using the `mongorestore` command. This should be automatically installed using mongodb. If it isn't, download if from here: https://docs.mongodb.com/database-tools/mongorestore/#installation. 
-
-First start mongod (as specified in the installation instructions).
-
-Restore the database
-
-```
-mongorestore -d <DATABASE-NAME> /mongo-database-dump/
-```
-
-This database contains user information in a collection.
-
-By default, this will add the database to mongodb running on localhost:27017
-
-
-### Run Instructions
-
-As mentioned in the mongo installation instructions, please ensure mongo is running.
-
-To start the NPM server from the root of the project:
-```
-npm start
-```
-
 ### Tasks
 * create API endpoint to retrieve user information in JSON format
 * use this information to create a page to display their information
