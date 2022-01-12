@@ -1,3 +1,12 @@
+### Project implementations
+I really struggled with this requirement: "create an API endpoint to retrieve users who only speak French" as all users in the database speak a fixed set of 5 languages. I assumed the requirement was right, so it took me a little while to understand that the my query was not the problem. 
+As for API endpoints, maybe I should have created some, but I really didn't find it necessary since the filtering could be done in a couple of lines.
+Another big struggle was "move over from React to EJS".
+I appreciated the opportunity to learn about EJS, but I really hope it woudn't be preferred over the powerful, clean and tidy React.
+As for the UI, basic implementation with a little help from https://materializecss.com/
+
+
+
 ### Installation Instructions
 Please ensure that you have NPM and NodeJS installed. If you do not, please download the latest version here: https://docs.npmjs.com/downloading-and-installing-node-js-and-npm
 
